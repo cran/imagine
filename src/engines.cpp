@@ -51,6 +51,8 @@ NumericMatrix engine1(NumericMatrix data, NumericMatrix kernel){
 NumericMatrix engine2(NumericMatrix data, NumericMatrix kernel){
 
   // Engine 2: Convolution mean
+  // For now, this function is not available because the output is equivalent to
+  // multiplying the matrices by a constant.
 
   int nrows = data.nrow();
   int ncols = data.ncol();
@@ -74,7 +76,7 @@ NumericMatrix engine2(NumericMatrix data, NumericMatrix kernel){
           // Multiply the value of each cell by the corresponding value of the kernel.
           if((a > 1) && (a < (nrows - 1)) && (b > 1) && (b < (ncols - 1)) && (!std::isnan(data(a, b)))){
             cumSum += data(a, b)*kernel(m, n);
-            k += kernel(m, n);
+            k = k + kernel(m, n);
           }
 
         }
