@@ -6,22 +6,18 @@
 NULL
 
 engine1 <- function(data, kernel) {
-    .Call('imagine_engine1', PACKAGE = 'imagine', data, kernel)
+    .Call(imagine_engine1, data, kernel)
 }
 
-engine2 <- function(data, kernel) {
-    .Call('imagine_engine2', PACKAGE = 'imagine', data, kernel)
+engine2 <- function(data, kernel, x) {
+    .Call(imagine_engine2, data, kernel, x)
 }
 
-engine3 <- function(data, kernel, x, maxValue) {
-    .Call('imagine_engine3', PACKAGE = 'imagine', data, kernel, x, maxValue)
+engine3 <- function(data, radius) {
+    .Call(imagine_engine3, data, radius)
 }
 
-engine4 <- function(data, radius) {
-    .Call('imagine_engine4', PACKAGE = 'imagine', data, radius)
-}
-
-engine5 <- function(data, radius, x, maxValue) {
-    .Call('imagine_engine5', PACKAGE = 'imagine', data, radius, x, maxValue)
+engine4 <- function(data, radius, x) {
+    .Call(imagine_engine4, data, radius, x)
 }
 

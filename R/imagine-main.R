@@ -1,4 +1,4 @@
-#' @title Imaging Engine, Tools for application of image filters to data matrices
+#' @title IMAGing engINE, Tools for application of image filters to data matrices
 #'
 #' @author Wencheng Lau-Medrano, \email{luis.laum@gmail.com}
 #' @name image-package
@@ -58,7 +58,6 @@ convolution2D <- function(dataMatrix, kernel, times = 1){
     gc(reset = TRUE)
 
     output <- with(checkedArgs, engine1(data = output, kernel = kernel))
-
   }
 
   return(output)
@@ -81,11 +80,7 @@ convolutionQuantile <- function(dataMatrix, kernel, x, times = 1){
   for(i in seq(checkedArgs$times)){
     gc(reset = TRUE)
 
-    maxValue <- max(an(output), na.rm = TRUE)*max(an(checkedArgs$kernel), na.rm = TRUE)
-
-    output <- with(checkedArgs, engine3(data = output, kernel = kernel, x = x, maxValue = maxValue))
-    output[output > (maxValue - 1)] <- NA
-
+    output <- with(checkedArgs, engine2(data = output, kernel = kernel, x = x))
   }
 
   return(output)
@@ -150,8 +145,7 @@ meanFilter <- function(dataMatrix, radius, times = 1){
   for(i in seq(checkedArgs$times)){
     gc(reset = TRUE)
 
-    output <- with(checkedArgs, engine4(data = output, radius = radius))
-
+    output <- with(checkedArgs, engine3(data = output, radius = radius))
   }
 
   return(output)
@@ -173,13 +167,9 @@ quantileFilter <- function(dataMatrix, radius, x, times = 1){
   # Apply filters
   output <- checkedArgs$dataMatrix
   for(i in seq(checkedArgs$times)){
-
-    maxValue <- max(an(output), na.rm = TRUE)*99
-
-    output <- with(checkedArgs, engine5(data = output, radius = radius, x = x, maxValue = maxValue))
-    output[output > (maxValue - 1)] <- NA
-
     gc(reset = TRUE)
+
+    output <- with(checkedArgs, engine4(data = output, radius = radius, x = x))
   }
 
   return(output)
