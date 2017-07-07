@@ -6,14 +6,15 @@
 using namespace Rcpp;
 
 // engine1
-NumericMatrix engine1(NumericMatrix data, NumericMatrix kernel);
-RcppExport SEXP imagine_engine1(SEXP dataSEXP, SEXP kernelSEXP) {
+NumericMatrix engine1(NumericMatrix data, NumericMatrix kernel, bool noNA);
+RcppExport SEXP imagine_engine1(SEXP dataSEXP, SEXP kernelSEXP, SEXP noNASEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< NumericMatrix >::type data(dataSEXP);
     Rcpp::traits::input_parameter< NumericMatrix >::type kernel(kernelSEXP);
-    rcpp_result_gen = Rcpp::wrap(engine1(data, kernel));
+    Rcpp::traits::input_parameter< bool >::type noNA(noNASEXP);
+    rcpp_result_gen = Rcpp::wrap(engine1(data, kernel, noNA));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -57,7 +58,7 @@ END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"imagine_engine1", (DL_FUNC) &imagine_engine1, 2},
+    {"imagine_engine1", (DL_FUNC) &imagine_engine1, 3},
     {"imagine_engine2", (DL_FUNC) &imagine_engine2, 3},
     {"imagine_engine3", (DL_FUNC) &imagine_engine3, 2},
     {"imagine_engine4", (DL_FUNC) &imagine_engine4, 3},
