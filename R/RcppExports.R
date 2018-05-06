@@ -5,19 +5,23 @@
 #' @useDynLib imagine, .registration = TRUE
 NULL
 
-engine1 <- function(data, kernel, noNA = FALSE) {
-    .Call(imagine_engine1, data, kernel, noNA)
+engine1 <- function(data, kernel, noNA) {
+    .Call(`_imagine_engine1`, data, kernel, noNA)
 }
 
-engine2 <- function(data, kernel, x) {
-    .Call(imagine_engine2, data, kernel, x)
+engine2 <- function(data, kernel, probs) {
+    .Call(`_imagine_engine2`, data, kernel, probs)
 }
 
 engine3 <- function(data, radius) {
-    .Call(imagine_engine3, data, radius)
+    .Call(`_imagine_engine3`, data, radius)
 }
 
-engine4 <- function(data, radius, x) {
-    .Call(imagine_engine4, data, radius, x)
+engine4 <- function(data, radius, probs) {
+    .Call(`_imagine_engine4`, data, radius, probs)
+}
+
+engine5 <- function(data, probs, I_radius, O_radius) {
+    .Call(`_imagine_engine5`, data, probs, I_radius, O_radius)
 }
 

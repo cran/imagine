@@ -7,7 +7,7 @@ using namespace Rcpp;
 
 // engine1
 NumericMatrix engine1(NumericMatrix data, NumericMatrix kernel, bool noNA);
-RcppExport SEXP imagine_engine1(SEXP dataSEXP, SEXP kernelSEXP, SEXP noNASEXP) {
+RcppExport SEXP _imagine_engine1(SEXP dataSEXP, SEXP kernelSEXP, SEXP noNASEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -19,21 +19,21 @@ BEGIN_RCPP
 END_RCPP
 }
 // engine2
-NumericMatrix engine2(NumericMatrix data, NumericMatrix kernel, double x);
-RcppExport SEXP imagine_engine2(SEXP dataSEXP, SEXP kernelSEXP, SEXP xSEXP) {
+NumericMatrix engine2(NumericMatrix data, NumericMatrix kernel, double probs);
+RcppExport SEXP _imagine_engine2(SEXP dataSEXP, SEXP kernelSEXP, SEXP probsSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< NumericMatrix >::type data(dataSEXP);
     Rcpp::traits::input_parameter< NumericMatrix >::type kernel(kernelSEXP);
-    Rcpp::traits::input_parameter< double >::type x(xSEXP);
-    rcpp_result_gen = Rcpp::wrap(engine2(data, kernel, x));
+    Rcpp::traits::input_parameter< double >::type probs(probsSEXP);
+    rcpp_result_gen = Rcpp::wrap(engine2(data, kernel, probs));
     return rcpp_result_gen;
 END_RCPP
 }
 // engine3
 NumericMatrix engine3(NumericMatrix data, int radius);
-RcppExport SEXP imagine_engine3(SEXP dataSEXP, SEXP radiusSEXP) {
+RcppExport SEXP _imagine_engine3(SEXP dataSEXP, SEXP radiusSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -44,24 +44,39 @@ BEGIN_RCPP
 END_RCPP
 }
 // engine4
-NumericMatrix engine4(NumericMatrix data, int radius, double x);
-RcppExport SEXP imagine_engine4(SEXP dataSEXP, SEXP radiusSEXP, SEXP xSEXP) {
+NumericMatrix engine4(NumericMatrix data, int radius, double probs);
+RcppExport SEXP _imagine_engine4(SEXP dataSEXP, SEXP radiusSEXP, SEXP probsSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< NumericMatrix >::type data(dataSEXP);
     Rcpp::traits::input_parameter< int >::type radius(radiusSEXP);
-    Rcpp::traits::input_parameter< double >::type x(xSEXP);
-    rcpp_result_gen = Rcpp::wrap(engine4(data, radius, x));
+    Rcpp::traits::input_parameter< double >::type probs(probsSEXP);
+    rcpp_result_gen = Rcpp::wrap(engine4(data, radius, probs));
+    return rcpp_result_gen;
+END_RCPP
+}
+// engine5
+NumericMatrix engine5(NumericMatrix data, double probs, int I_radius, int O_radius);
+RcppExport SEXP _imagine_engine5(SEXP dataSEXP, SEXP probsSEXP, SEXP I_radiusSEXP, SEXP O_radiusSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericMatrix >::type data(dataSEXP);
+    Rcpp::traits::input_parameter< double >::type probs(probsSEXP);
+    Rcpp::traits::input_parameter< int >::type I_radius(I_radiusSEXP);
+    Rcpp::traits::input_parameter< int >::type O_radius(O_radiusSEXP);
+    rcpp_result_gen = Rcpp::wrap(engine5(data, probs, I_radius, O_radius));
     return rcpp_result_gen;
 END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"imagine_engine1", (DL_FUNC) &imagine_engine1, 3},
-    {"imagine_engine2", (DL_FUNC) &imagine_engine2, 3},
-    {"imagine_engine3", (DL_FUNC) &imagine_engine3, 2},
-    {"imagine_engine4", (DL_FUNC) &imagine_engine4, 3},
+    {"_imagine_engine1", (DL_FUNC) &_imagine_engine1, 3},
+    {"_imagine_engine2", (DL_FUNC) &_imagine_engine2, 3},
+    {"_imagine_engine3", (DL_FUNC) &_imagine_engine3, 2},
+    {"_imagine_engine4", (DL_FUNC) &_imagine_engine4, 3},
+    {"_imagine_engine5", (DL_FUNC) &_imagine_engine5, 4},
     {NULL, NULL, 0}
 };
 

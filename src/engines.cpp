@@ -9,7 +9,7 @@ using namespace Rcpp;
 
 // ENGINE 1: 2D convolution
 // [[Rcpp::export]]
-NumericMatrix engine1(NumericMatrix data, NumericMatrix kernel, bool noNA = false){
+NumericMatrix engine1(NumericMatrix data, NumericMatrix kernel, bool noNA){
 
   // Define dimension of matrix
   int nrows = data.nrow();
@@ -24,11 +24,11 @@ NumericMatrix engine1(NumericMatrix data, NumericMatrix kernel, bool noNA = fals
   double knlColHalfDouble = std::floor(knlcols/2);
   int knlColHalf = (int)round(knlColHalfDouble);
 
-  bool threshold = 1;
+  int threshold = (knlrows*knlcols - 1);
 
   // If noNA is TRUE, define threshold as prod of dims of kernel
-  if(!noNA){
-    threshold = (knlrows*knlcols - 1);
+  if(noNA){
+    threshold = 0;
   }
 
   // Define output matrix, same dims of input
@@ -37,9 +37,9 @@ NumericMatrix engine1(NumericMatrix data, NumericMatrix kernel, bool noNA = fals
   for(int j = 0; j < ncols; j++){
     for(int i = 0; i < nrows; i++){
 
-      if((i > knlRowHalf) && (i < (nrows - knlRowHalf)) && (j > knlColHalf) && (j < (ncols - knlColHalf))){
+      if((i > (knlRowHalf - 1)) && (i < (nrows - knlRowHalf)) && (j > (knlColHalf - 1)) && (j < (ncols - knlColHalf))){
         double cumSum = 0;
-        double naSum = 0;
+        int naSum = 0;
 
         // Multiply the value of each cell by the corresponding value of the kernel.
         for(int n = 0; n < knlcols; n++){
@@ -73,7 +73,7 @@ NumericMatrix engine1(NumericMatrix data, NumericMatrix kernel, bool noNA = fals
 
 // ENGINE 2: Convolution with quantiles
 // [[Rcpp::export]]
-NumericMatrix engine2(NumericMatrix data, NumericMatrix kernel, double x){
+NumericMatrix engine2(NumericMatrix data, NumericMatrix kernel, double probs){
 
   int nrows = data.nrow();
   int ncols = data.ncol();
@@ -111,8 +111,8 @@ NumericMatrix engine2(NumericMatrix data, NumericMatrix kernel, double x){
         // Sort values
         miniMatrix.sort();
 
-        // Get value for position indicated by 'x'
-        emptyData(i, j) = miniMatrix[x];
+        // Get value for position indicated by 'probs'
+        emptyData(i, j) = miniMatrix[probs];
       }else{
         emptyData(i, j) = NA_REAL;
       }
@@ -170,7 +170,7 @@ NumericMatrix engine3(NumericMatrix data, int radius){
 
 // ENGINE 4: Quantile filter
 // [[Rcpp::export]]
-NumericMatrix engine4(NumericMatrix data, int radius, double x){
+NumericMatrix engine4(NumericMatrix data, int radius, double probs){
   int nrows = data.nrow();
   int ncols = data.ncol();
 
@@ -202,8 +202,104 @@ NumericMatrix engine4(NumericMatrix data, int radius, double x){
         // Sort values
         miniMatrix.sort();
 
-        // Get value for position indicated by 'x'
-        emptyData(i, j) = miniMatrix[x];
+        // Get value for position indicated by 'probs'
+        emptyData(i, j) = miniMatrix[probs];
+      }else{
+        emptyData(i, j) = NA_REAL;
+      }
+    }
+  }
+
+  return emptyData;
+}
+
+// ENGINE 5: Contextual Median Filter
+// Proposed by Belkin et al. (2009), doi:10.1016/j.jmarsys.2008.11.018
+// [[Rcpp::export]]
+NumericMatrix engine5(NumericMatrix data, double probs, int I_radius, int O_radius){
+  int nrows = data.nrow();
+  int ncols = data.ncol();
+
+  NumericMatrix emptyData(nrows, ncols);
+  NumericVector O_miniMatrix(O_radius*O_radius);
+  NumericVector I_miniMatrix(I_radius*I_radius);
+
+  double I_halfRadiusDouble = std::floor(I_radius/2);
+  int I_halfRadius = (int)round(I_halfRadiusDouble);
+
+  double O_halfRadiusDouble = std::floor(O_radius/2);
+  int O_halfRadius = (int)round(O_halfRadiusDouble);
+
+  for(int j = 0; j < ncols; j++){
+    for(int i = 0; i < nrows; i++){
+
+      // Only if i and j is within limits, apply filter
+      if((i > O_halfRadius) && (i < (nrows - O_halfRadius)) && (j > O_halfRadius) && (j < (ncols - O_halfRadius))){
+
+        // Check Outer filter
+        int naCounter = 0;
+        for(int n = 0; n < O_radius; n++){
+          for(int m = 0; m < O_radius; m++){
+            int index = m*O_radius + n;
+            int a = i + m - O_halfRadius;
+            int b = j + n - O_halfRadius;
+
+            if(std::isnan(data(a, b))){
+              O_miniMatrix[index] = NA_REAL;
+              naCounter++;
+            }else{
+              O_miniMatrix[index] = data(a, b);
+            }
+          }
+        }
+
+        if(naCounter == (O_radius*O_radius)){
+          emptyData(i, j) = NA_REAL;
+        }else{
+          double maxMini = max(O_miniMatrix);
+          double minMini = min(O_miniMatrix);
+
+          // Check the Outer filter
+          // If TRUE, keep the grid value
+          if((data(i, j) == minMini) | (data(i, j) == maxMini)){
+            emptyData(i, j) = data(i, j);
+          }else{
+            // If FALSE, apply the Inner filter
+            // Check Inner filter
+            naCounter = 0;
+            for(int n = 0; n < I_radius; n++){
+              for(int m = 0; m < I_radius; m++){
+                int index = m*I_radius + n;
+                int a = i + m - I_halfRadius;
+                int b = j + n - I_halfRadius;
+
+                if(std::isnan(data(a, b))){
+                  I_miniMatrix[index] = NA_REAL;
+                  naCounter++;
+                }else{
+                  I_miniMatrix[index] = data(a, b);
+                }
+              }
+            }
+
+            if(naCounter == (I_radius*I_radius)){
+              emptyData(i, j) = NA_REAL;
+            }else{
+              double maxMini = max(I_miniMatrix);
+              double minMini = min(I_miniMatrix);
+
+              if((data(i, j) == minMini) | (data(i, j) == maxMini)){
+                // Sort values
+                I_miniMatrix.sort();
+
+                // Put the median value of the Inner miniMatrix
+                emptyData(i, j) = I_miniMatrix[probs];
+              }else{
+                emptyData(i, j) = data(i, j);
+              }
+            }
+          }
+        }
       }else{
         emptyData(i, j) = NA_REAL;
       }
