@@ -6,28 +6,28 @@
 using namespace Rcpp;
 
 // engine1
-NumericMatrix engine1(NumericMatrix data, NumericMatrix kernel, bool noNA);
-RcppExport SEXP _imagine_engine1(SEXP dataSEXP, SEXP kernelSEXP, SEXP noNASEXP) {
+NumericMatrix engine1(NumericMatrix data, NumericMatrix kernel);
+RcppExport SEXP _imagine_engine1(SEXP dataSEXP, SEXP kernelSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< NumericMatrix >::type data(dataSEXP);
     Rcpp::traits::input_parameter< NumericMatrix >::type kernel(kernelSEXP);
-    Rcpp::traits::input_parameter< bool >::type noNA(noNASEXP);
-    rcpp_result_gen = Rcpp::wrap(engine1(data, kernel, noNA));
+    rcpp_result_gen = Rcpp::wrap(engine1(data, kernel));
     return rcpp_result_gen;
 END_RCPP
 }
 // engine2
-NumericMatrix engine2(NumericMatrix data, NumericMatrix kernel, double probs);
-RcppExport SEXP _imagine_engine2(SEXP dataSEXP, SEXP kernelSEXP, SEXP probsSEXP) {
+NumericMatrix engine2(NumericMatrix data, NumericMatrix kernel, double probs, int naVal);
+RcppExport SEXP _imagine_engine2(SEXP dataSEXP, SEXP kernelSEXP, SEXP probsSEXP, SEXP naValSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< NumericMatrix >::type data(dataSEXP);
     Rcpp::traits::input_parameter< NumericMatrix >::type kernel(kernelSEXP);
     Rcpp::traits::input_parameter< double >::type probs(probsSEXP);
-    rcpp_result_gen = Rcpp::wrap(engine2(data, kernel, probs));
+    Rcpp::traits::input_parameter< int >::type naVal(naValSEXP);
+    rcpp_result_gen = Rcpp::wrap(engine2(data, kernel, probs, naVal));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -44,39 +44,38 @@ BEGIN_RCPP
 END_RCPP
 }
 // engine4
-NumericMatrix engine4(NumericMatrix data, int radius, double probs);
-RcppExport SEXP _imagine_engine4(SEXP dataSEXP, SEXP radiusSEXP, SEXP probsSEXP) {
+NumericMatrix engine4(NumericMatrix data, int radius, double probs, int naVal);
+RcppExport SEXP _imagine_engine4(SEXP dataSEXP, SEXP radiusSEXP, SEXP probsSEXP, SEXP naValSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< NumericMatrix >::type data(dataSEXP);
     Rcpp::traits::input_parameter< int >::type radius(radiusSEXP);
     Rcpp::traits::input_parameter< double >::type probs(probsSEXP);
-    rcpp_result_gen = Rcpp::wrap(engine4(data, radius, probs));
+    Rcpp::traits::input_parameter< int >::type naVal(naValSEXP);
+    rcpp_result_gen = Rcpp::wrap(engine4(data, radius, probs, naVal));
     return rcpp_result_gen;
 END_RCPP
 }
 // engine5
-NumericMatrix engine5(NumericMatrix data, double probs, int I_radius, int O_radius);
-RcppExport SEXP _imagine_engine5(SEXP dataSEXP, SEXP probsSEXP, SEXP I_radiusSEXP, SEXP O_radiusSEXP) {
+NumericMatrix engine5(NumericMatrix data, int naVal);
+RcppExport SEXP _imagine_engine5(SEXP dataSEXP, SEXP naValSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< NumericMatrix >::type data(dataSEXP);
-    Rcpp::traits::input_parameter< double >::type probs(probsSEXP);
-    Rcpp::traits::input_parameter< int >::type I_radius(I_radiusSEXP);
-    Rcpp::traits::input_parameter< int >::type O_radius(O_radiusSEXP);
-    rcpp_result_gen = Rcpp::wrap(engine5(data, probs, I_radius, O_radius));
+    Rcpp::traits::input_parameter< int >::type naVal(naValSEXP);
+    rcpp_result_gen = Rcpp::wrap(engine5(data, naVal));
     return rcpp_result_gen;
 END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_imagine_engine1", (DL_FUNC) &_imagine_engine1, 3},
-    {"_imagine_engine2", (DL_FUNC) &_imagine_engine2, 3},
+    {"_imagine_engine1", (DL_FUNC) &_imagine_engine1, 2},
+    {"_imagine_engine2", (DL_FUNC) &_imagine_engine2, 4},
     {"_imagine_engine3", (DL_FUNC) &_imagine_engine3, 2},
-    {"_imagine_engine4", (DL_FUNC) &_imagine_engine4, 3},
-    {"_imagine_engine5", (DL_FUNC) &_imagine_engine5, 4},
+    {"_imagine_engine4", (DL_FUNC) &_imagine_engine4, 4},
+    {"_imagine_engine5", (DL_FUNC) &_imagine_engine5, 2},
     {NULL, NULL, 0}
 };
 

@@ -4,28 +4,27 @@
 \alias{contextualMF}
 \title{Performs Contextual Median Filter}
 \usage{
-contextualMF(X, inner_radius = 3, outer_radius = 5, probs = 0.5,
-  times = 1)
+contextualMF(X, times = 1, na = NA)
 }
 \arguments{
 \item{X}{A \code{numeric matrix} object used for apply filters.}
 
-\item{inner_radius}{Size of the Inner squared kernel to apply median. Check Details.}
-
-\item{outer_radius}{Size of the Outer squared kernel to apply median. Check Details.}
-
-\item{probs}{\code{numeric} vector of probabilities with values in [0,1].}
-
 \item{times}{How many times do you want to apply the filter?}
+
+\item{na}{\code{NA} as default. But, if specified, it must be an integer value higher
+than the maximum of \code{X}.}
 }
 \value{
-\code{contextualMF} returns a \code{matrix} object with the same dimensions of \code{X}.
+\code{contextualMF} returns a \code{matrix} object with the same dimensions
+of \code{X}.
 }
 \description{
-This function performs a generalization of the Contextual Median Filter propose by
-Belkin & O'Reilly (2009). The default parameters reproduce the algorithm of the paper, but it allows
-the users to modify values like the inner/outer matrices (check the paper for extra information) as
-well as the quantile (as default, for median: \code{probs = 0.5}) and the number of applications (\code{times}).
+This function performs the Contextual Median Filter proposed by Belkin &
+O'Reilly (2009), based on the pseudo-code written on the paper.
+}
+\details{
+The users can change the number of recursive applications by using \code{times} argument
+(\code{times = 1} as default).
 }
 \examples{
 # Generate example matrix
@@ -41,7 +40,7 @@ myOutput <- contextualMF(X = myMatrix)
 image(myOutput, zlim = c(0, 100))
 }
 \references{
-Belkin, I. M., & O'Reilly, J. E. (2009). An algorithm for oceanic front detection in chlorophyll
-and SST satellite imagery. Journal of Marine Systems, 78(3), 319-326
-(\url{http://dx.doi.org/10.1016/j.jmarsys.2008.11.018}).
+Belkin, I. M., & O'Reilly, J. E. (2009). An algorithm for oceanic front
+detection in chlorophyll and SST satellite imagery. Journal of Marine Systems, 78(3),
+319-326 (\url{http://dx.doi.org/10.1016/j.jmarsys.2008.11.018}).
 }
