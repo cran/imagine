@@ -11,76 +11,101 @@ Rcpp::Rostream<true>&  Rcpp::Rcout = Rcpp::Rcpp_cout_get();
 Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 #endif
 
-// engine1
-NumericMatrix engine1(NumericMatrix data, NumericMatrix kernel);
-RcppExport SEXP _imagine_engine1(SEXP dataSEXP, SEXP kernelSEXP) {
+// engine1_2dConv
+NumericMatrix engine1_2dConv(NumericMatrix data, NumericMatrix kernel);
+RcppExport SEXP _imagine_engine1_2dConv(SEXP dataSEXP, SEXP kernelSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< NumericMatrix >::type data(dataSEXP);
     Rcpp::traits::input_parameter< NumericMatrix >::type kernel(kernelSEXP);
-    rcpp_result_gen = Rcpp::wrap(engine1(data, kernel));
+    rcpp_result_gen = Rcpp::wrap(engine1_2dConv(data, kernel));
     return rcpp_result_gen;
 END_RCPP
 }
-// engine2
-NumericMatrix engine2(arma::mat data, arma::mat kernel, arma::vec probs);
-RcppExport SEXP _imagine_engine2(SEXP dataSEXP, SEXP kernelSEXP, SEXP probsSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< arma::mat >::type data(dataSEXP);
-    Rcpp::traits::input_parameter< arma::mat >::type kernel(kernelSEXP);
-    Rcpp::traits::input_parameter< arma::vec >::type probs(probsSEXP);
-    rcpp_result_gen = Rcpp::wrap(engine2(data, kernel, probs));
-    return rcpp_result_gen;
-END_RCPP
-}
-// engine3
-NumericMatrix engine3(NumericMatrix data, NumericVector radius);
-RcppExport SEXP _imagine_engine3(SEXP dataSEXP, SEXP radiusSEXP) {
+// engine6_agenbag1
+NumericMatrix engine6_agenbag1(NumericMatrix data);
+RcppExport SEXP _imagine_engine6_agenbag1(SEXP dataSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< NumericMatrix >::type data(dataSEXP);
-    Rcpp::traits::input_parameter< NumericVector >::type radius(radiusSEXP);
-    rcpp_result_gen = Rcpp::wrap(engine3(data, radius));
+    rcpp_result_gen = Rcpp::wrap(engine6_agenbag1(data));
     return rcpp_result_gen;
 END_RCPP
 }
-// engine4
-NumericMatrix engine4(arma::mat data, NumericVector radius, arma::vec probs);
-RcppExport SEXP _imagine_engine4(SEXP dataSEXP, SEXP radiusSEXP, SEXP probsSEXP) {
+// engine7_agenbag2
+NumericMatrix engine7_agenbag2(arma::mat data, int threshold);
+RcppExport SEXP _imagine_engine7_agenbag2(SEXP dataSEXP, SEXP thresholdSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< arma::mat >::type data(dataSEXP);
-    Rcpp::traits::input_parameter< NumericVector >::type radius(radiusSEXP);
-    Rcpp::traits::input_parameter< arma::vec >::type probs(probsSEXP);
-    rcpp_result_gen = Rcpp::wrap(engine4(data, radius, probs));
+    Rcpp::traits::input_parameter< int >::type threshold(thresholdSEXP);
+    rcpp_result_gen = Rcpp::wrap(engine7_agenbag2(data, threshold));
     return rcpp_result_gen;
 END_RCPP
 }
-// engine5
-NumericMatrix engine5(NumericMatrix data, int i_size, int o_size);
-RcppExport SEXP _imagine_engine5(SEXP dataSEXP, SEXP i_sizeSEXP, SEXP o_sizeSEXP) {
+// engine5_CMF
+NumericMatrix engine5_CMF(NumericMatrix data, int i_size, int o_size);
+RcppExport SEXP _imagine_engine5_CMF(SEXP dataSEXP, SEXP i_sizeSEXP, SEXP o_sizeSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< NumericMatrix >::type data(dataSEXP);
     Rcpp::traits::input_parameter< int >::type i_size(i_sizeSEXP);
     Rcpp::traits::input_parameter< int >::type o_size(o_sizeSEXP);
-    rcpp_result_gen = Rcpp::wrap(engine5(data, i_size, o_size));
+    rcpp_result_gen = Rcpp::wrap(engine5_CMF(data, i_size, o_size));
+    return rcpp_result_gen;
+END_RCPP
+}
+// engine2_convWithQuantiles
+NumericMatrix engine2_convWithQuantiles(arma::mat data, arma::mat kernel, arma::vec probs);
+RcppExport SEXP _imagine_engine2_convWithQuantiles(SEXP dataSEXP, SEXP kernelSEXP, SEXP probsSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< arma::mat >::type data(dataSEXP);
+    Rcpp::traits::input_parameter< arma::mat >::type kernel(kernelSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type probs(probsSEXP);
+    rcpp_result_gen = Rcpp::wrap(engine2_convWithQuantiles(data, kernel, probs));
+    return rcpp_result_gen;
+END_RCPP
+}
+// engine3_meanFilter
+NumericMatrix engine3_meanFilter(NumericMatrix data, NumericVector radius);
+RcppExport SEXP _imagine_engine3_meanFilter(SEXP dataSEXP, SEXP radiusSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericMatrix >::type data(dataSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type radius(radiusSEXP);
+    rcpp_result_gen = Rcpp::wrap(engine3_meanFilter(data, radius));
+    return rcpp_result_gen;
+END_RCPP
+}
+// engine4_quantileFilter
+NumericMatrix engine4_quantileFilter(arma::mat data, NumericVector radius, arma::vec probs);
+RcppExport SEXP _imagine_engine4_quantileFilter(SEXP dataSEXP, SEXP radiusSEXP, SEXP probsSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< arma::mat >::type data(dataSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type radius(radiusSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type probs(probsSEXP);
+    rcpp_result_gen = Rcpp::wrap(engine4_quantileFilter(data, radius, probs));
     return rcpp_result_gen;
 END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_imagine_engine1", (DL_FUNC) &_imagine_engine1, 2},
-    {"_imagine_engine2", (DL_FUNC) &_imagine_engine2, 3},
-    {"_imagine_engine3", (DL_FUNC) &_imagine_engine3, 2},
-    {"_imagine_engine4", (DL_FUNC) &_imagine_engine4, 3},
-    {"_imagine_engine5", (DL_FUNC) &_imagine_engine5, 3},
+    {"_imagine_engine1_2dConv", (DL_FUNC) &_imagine_engine1_2dConv, 2},
+    {"_imagine_engine6_agenbag1", (DL_FUNC) &_imagine_engine6_agenbag1, 1},
+    {"_imagine_engine7_agenbag2", (DL_FUNC) &_imagine_engine7_agenbag2, 2},
+    {"_imagine_engine5_CMF", (DL_FUNC) &_imagine_engine5_CMF, 3},
+    {"_imagine_engine2_convWithQuantiles", (DL_FUNC) &_imagine_engine2_convWithQuantiles, 3},
+    {"_imagine_engine3_meanFilter", (DL_FUNC) &_imagine_engine3_meanFilter, 2},
+    {"_imagine_engine4_quantileFilter", (DL_FUNC) &_imagine_engine4_quantileFilter, 3},
     {NULL, NULL, 0}
 };
 
