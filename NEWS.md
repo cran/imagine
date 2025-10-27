@@ -1,3 +1,7 @@
+# imagine 2.1.3
+
+* Accepting changes from Eddelbuettel.
+
 # imagine 2.1.2
 
 * Minor correction on `is_extreme` C++ function.
