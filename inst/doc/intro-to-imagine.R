@@ -1,73 +1,120 @@
-## ----include = FALSE----------------------------------------------------------
-knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>"
-)
-
-## ----setup--------------------------------------------------------------------
+## -----------------------------------------------------------------------------
+#| label: setup
 library(imagine)
 
-## ----eval=FALSE---------------------------------------------------------------
+
+## -----------------------------------------------------------------------------
+#| eval: false
 # install.packages("imagine")
 
-## ----eval=FALSE---------------------------------------------------------------
+
+## -----------------------------------------------------------------------------
+#| eval: false
+
 # # Build kernels
 # # Kernel 1: For bottom edge recognition
-# kernel1 <- matrix(c(-1, -2, -1,
-#                      0,  0,  0,
-#                      1,  2,  1),
-#                   nrow = 3)
+# kernel1 <- matrix(
+#   data = c(-1, -2, -1,
+#             0,  0,  0,
+#             1,  2,  1),
+#   nrow = 3
+# )
 # 
 # # Kernel 2: Diagonal weighting
-# kernel2 <- matrix(c(-2, 0, 0,
-#                      0, 1, 0,
-#                      0, 0, 2),
-#                   nrow = 3)
+# kernel2 <- matrix(
+#   data = c(-2, 0, 0,
+#             0, 1, 0,
+#             0, 0, 2),
+#   nrow = 3
+# )
 # 
 # # Apply filters
 # convolutionExample  <- convolution2D(X = wbImage, kernel = kernel1)
 # convQuantileExample <- convolutionQuantile(X = wbImage, kernel = kernel2, probs = 0.1)
 
-## ----message=FALSE, fig.height=6, fig.width=5.33, fig.cap = "Figure 1: 2D vs 2D quantile convolutions", results='hide', fig.pos="h", echo=FALSE----
+
+## -----------------------------------------------------------------------------
+#| message: false
+#| label: fig-2d-quantile-conv
+#| fig-width: 5.33
+#| fig-height: 8.5
+#| fig-cap: "2D vs 2D quantile convolutions"
+#| fig-pos: "h"
+#| results: hide
+#| echo: false
 
 # Defining a copy of wbImage
 myMatrix <- wbImage
 
 # Defining color palette
-cols <- gray.colors(n = 1e3, start = 1, end = 0)
+cols <- gray.colors(n = 1e3, start = 0, end = 1)
 
 # Build kernels
 # Kernel 1: For bottom edge recognition
-kernel1 <- matrix(c(-1, -2, -1,
-                     0,  0,  0,
-                     1,  2,  1), 
-                  nrow = 3)
+kernel1 <- matrix(
+  data = c(-1, -2, -1,
+            0,  0,  0,
+            1,  2,  1), 
+  nrow = 3
+)
 
-# Kernel 2: Diagonal weighting
-kernel2 <- matrix(c(-2, 0, 0,
-                     0, 1, 0,
-                     0, 0, 2), 
-                  nrow = 3)
+# Kernel 2: Diagonal weighting 
+kernel2 <- matrix(
+  data = c(-2, 0, 0,
+            0, 1, 0,
+            0, 0, 2), 
+  nrow = 3
+)
 
 # Apply filters
 convolutionExample  <- convolution2D(X = myMatrix, kernel = kernel1)
-convQuantileExample <- convolutionQuantile(X = myMatrix, kernel = kernel2, probs = 0.8)
+convQuantileExample <- convolutionQuantile(
+  X = myMatrix, 
+  kernel = kernel2, 
+  probs = 0.8
+)
 
 # Make plots
-par(mar = c(0, 0.5, 0, 0.5), oma = c(0, 0, 2, 0), mfrow = c(2, 1))
+par(
+  mar = c(0, 0.5, 0, 0.5), 
+  oma = c(0, 0, 2, 0), 
+  mfrow = c(3, 1)
+)
+
+image(wbImage, col = cols, axes = FALSE)
+mtext(text = "Original", side = 3, line = -1.5, font = 2, adj = 0.99)
 
 image(convolutionExample, col = cols, axes = FALSE)
-mtext(text = "2D convolution", side = 1, line = -1.5, col = "white", font = 2, adj = 0.99)
+mtext(
+  text = "2D convolution", 
+  side = 3, 
+  line = -1.5, 
+  col = "white", 
+  font = 2, 
+  adj = 0.99
+)
 
 image(convQuantileExample, col = cols, axes = FALSE)
-mtext(text = "2D quantile convolution", side = 1, line = -1.5, col = "black", font = 2, adj = 0.99)
+mtext(
+  text = "2D quantile convolution", 
+  side = 3, 
+  line = -1.5, 
+  col = "black", 
+  font = 2, 
+  adj = 0.99
+)
 
-## ----eval=FALSE---------------------------------------------------------------
+
+## -----------------------------------------------------------------------------
+#| eval: false
+
 # # Add some noise (NA) to the image (matrix)
 # set.seed(7)
-# naIndex <- sample(x       = seq(prod(dim(myMatrix))),
-#                   size    = as.integer(0.4*prod(dim(myMatrix))),
-#                   replace = FALSE)
+# naIndex <- sample(
+#   x = seq(prod(dim(myMatrix))),
+#   size = as.integer(0.4*prod(dim(myMatrix))),
+#   replace = FALSE
+# )
 # myMatrix[naIndex] <- NA
 # 
 # # Build kernel
@@ -78,7 +125,17 @@ mtext(text = "2D quantile convolution", side = 1, line = -1.5, col = "black", fo
 # quantilefilterExample <- quantileFilter(X = myMatrix, radius = radius, probs = 0.1)
 # medianfilterExample   <- medianFilter(X = myMatrix, radius = radius)
 
-## ----message=FALSE, fig.height=5, fig.width=7.5, fig.cap = "Figure 2: Basic filters comparison", results='hide', fig.pos="h", echo=FALSE----
+
+## -----------------------------------------------------------------------------
+#| message: false
+#| label: fig-basic-filter-comparison
+#| fig-width: 7.5
+#| fig-height: 5
+#| fig-cap: "Basic filters comparison"
+#| fig-pos: "h"
+#| results: hide
+#| echo: false
+
 # Defining a copy of wbImage
 myMatrix <- wbImage
 
@@ -87,7 +144,10 @@ cols <- gray.colors(n = 1e3, start = 0, end = 1)
 
 # Add some noise (NA) to the image (matrix)
 set.seed(7)
-naIndex <- sample(x = seq(prod(dim(myMatrix))), size = as.integer(0.4*prod(dim(myMatrix))))
+naIndex <- sample(
+  x = seq(prod(dim(myMatrix))), 
+  size = as.integer(0.4*prod(dim(myMatrix)))
+)
 myMatrix[naIndex] <- NA
 
 # Apply filters
@@ -101,20 +161,50 @@ image(wbImage, col = cols, axes = FALSE)
 mtext(text = "Original", side = 3, line = -1.5, font = 2, adj = 0.99)
 
 image(myMatrix, col = cols, axes = FALSE)
-mtext(text = "Original with noise (NA)", side = 3, line = -1.5, font = 2, adj = 0.99)
+mtext(
+  text = "Original with noise (NA)", 
+  side = 3, 
+  line = -1.5, 
+  font = 2, 
+  adj = 0.99
+)
 
 # meanfilterExample[meanfilterExample < 0] <- 0
 image(meanfilterExample, col = cols, axes = FALSE)
-mtext(text = "Mean filter", side = 3, line = -1.5, font = 2, adj = 0.99)
+mtext(
+  text = "Mean filter", 
+  side = 3, 
+  line = -1.5, 
+  font = 2, 
+  adj = 0.99
+)
 
 # medianfilterExample[medianfilterExample < 0] <- 0
 image(medianfilterExample, col = cols, axes = FALSE)
-mtext(text = "2D median filter", side = 3, line = -1.5, font = 2, adj = 0.99)
+mtext(
+  text = "2D median filter", 
+  side = 3, 
+  line = -1.5, 
+  font = 2, 
+  adj = 0.99
+)
 
-## ----eval=FALSE---------------------------------------------------------------
+
+## -----------------------------------------------------------------------------
+#| eval: false
+
 # medianFilter(X = wbImage, radius = 5, times = 50)
 
-## ----message=FALSE, fig.height=5, fig.width=7.5, fig.cap = "Figure 3: Filters with several time settings", results='hide', fig.pos="h", echo=FALSE----
+
+## -----------------------------------------------------------------------------
+#| message: false
+#| label: fig-recursive-filtering
+#| fig-width: 7.5
+#| fig-height: 5
+#| fig-cap: "Filters with several time settings"
+#| fig-pos: "h"
+#| results: hide
+#| echo: false
 
 times <- c(1, 5, 15)
 

@@ -1,6 +1,7 @@
-# imagine 2.1.3
+# imagine 2.1.4
 
-* Accepting changes from Eddelbuettel.
+-   Subtle improvements to the code.
+-   imagine now uses the [cli](https://cli.r-lib.org/) package's syntax for messages.
 
 # imagine 2.1.2
 
